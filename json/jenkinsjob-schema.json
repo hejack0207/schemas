@@ -233,7 +233,7 @@
                 }
             }
         },
-        "bool": {
+        "parameter-bool": {
             "properties": {
                 "bool":{
                     "properties": {
@@ -256,7 +256,7 @@
                 }
             }
         },
-        "choice": {
+        "parameter-choice": {
             "properties": {
                 "choice": {
                     "properties": {
@@ -283,8 +283,8 @@
             "type": "array",
             "items": {
                 "oneOf": [
-                    { "$ref": "#/definitions/bool" },
-                    { "$ref": "#/definitions/choice" }
+                    { "$ref": "#/definitions/parameter-bool" },
+                    { "$ref": "#/definitions/parameter-choice" }
                 ]
             }
         }
