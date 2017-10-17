@@ -1,0 +1,287 @@
+{
+    "type":"object",
+    "properties": {
+        "job": {
+            "type": "object",
+            "properties": {
+                "name":{
+                    "type": "string"
+                },
+                "defaults":{
+                    "type": "string",
+                    "description": "Specifies a set of Defaults to use for this job, defaults to ‘’global’‘. If you have values that are common to all of your jobs, create a global Defaults object to hold them, and no further configuration of individual jobs is necessary. If some jobs should not use the global defaults, use this field to specify a different set of defaults.",
+                    "default": "global"
+                },
+                "project-type": {
+                    "type": "string",
+                    "enum": [
+                        "freestyle","maven","multijob","flow","pipeline","externaljob"
+                    ],
+                    "default": "freestyle"
+                },
+                "description": {
+                    "type": "string",
+                    "default": "!– Managed by Jenkins Job Builder"
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Boolean value to set whether or not this job should be disabled in Jenkins. Defaults to false (job will be enabled)."
+                },
+                "display-name": {
+                    "type": "string",
+                    "description": "Optional name shown for the project throughout the Jenkins web GUI in place of the actual job name. The jenkins_jobs tool cannot fully remove this trait once it is set, so use caution when setting it. Setting it to the same string as the job’s name is an effective un-set workaround. Alternately, the field can be cleared manually using the Jenkins web interface."
+                },
+                "concurrent": {
+                    "type": "boolean",
+                    "description": "Boolean value to set whether or not Jenkins can run this job concurrently. Defaults to false.",
+                    "default": false
+                },
+                "workspace": {
+                    "type": "string",
+                    "description": "Path for a custom workspace. Defaults to Jenkins default configuration."
+                },
+                "child-workspace": {
+                    "type": "string",
+                    "description": "Path for a child custom workspace. Defaults to Jenkins default configuration. This parameter is only valid for matrix type jobs."
+                },
+                "quiet-period": {
+                    "description": "Number of seconds to wait between consecutive runs of this job. Defaults to 0.",
+                    "type":"number",
+                    "default": 0
+                },
+                "block-downstream": {
+                    "description": "Boolean value to set whether or not this job must block while downstream jobs are running. Downstream jobs are determined transitively. Defaults to false.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "auth-token": {
+                    "description": "Specifies an authentication token that allows new builds to be triggered by accessing a special predefined URL. Only those who know the token will be able to trigger builds remotely.",
+                    "type": "string"
+                },
+                "retry-count": {
+                    "description": "If a build fails to checkout from the repository, Jenkins will retry the specified number of times before giving up.",
+                    "type": "number"
+                },
+                "node": {
+                    "description": "Restrict where this job can be run. If there is a group of machines that the job can be built on, you can specify that label as the node to tie on, which will cause Jenkins to build the job on any of the machines with that label. For matrix projects, this parameter will only restrict where the parent job will run.",
+                    "type": "string"
+                },
+                "logrotate": {
+                    "description": "The Logrotate section allows you to automatically remove old build history. It adds the logrotate attribute to the Job definition. All logrotate attributes default to “-1” (keep forever). Deprecated on jenkins >=1.637: use the build-discarder property instead",
+                    "type": "number"
+                },
+                "jdk": {
+                    "description": "The name of the jdk to use",
+                    "type": "string"
+                },
+                "raw":{
+                    "description": "If present, this section should contain a single xml entry. This XML will be inserted at the top-level of the Job definition.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name","project-type"
+            ]
+        },
+        "defaults": {
+
+        }
+    },
+    "definitions": {
+        "scm":{
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "scm": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "properties": {
+                                    "bzr": {
+                                        "properties": {
+                                            "url": {
+                                                "description": "URL of the bzr branch (required)",
+                                                "type":"string"
+                                            },
+                                            "clean-tree": {
+                                                "description": "Clean up the workspace (using bzr) before pulling the branch (default false)",
+                                                "type": "boolean",
+                                                "default": false
+                                            },
+                                            "lightweight-checkout": {
+                                                "description": "Use a lightweight checkout instead of a full branch (default false)",
+                                                "type":"boolean",
+                                                "default": false
+                                            },
+                                            "browser": {
+                                                "description": "The repository browser to use.",
+                                                "enum": [
+                                                    "auto","loggerhead","opengrok"
+                                                ],
+                                                "default": "auto"
+                                            },
+                                            "browser-url": {
+                                                "description": "URL for the repository browser (required if browser is set).",
+                                                "type": "string"
+                                            },
+                                            "opengrok-root-module": {
+                                                "description": "Root module for OpenGrok (required if browser is opengrok).",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "dependencies": {
+                                            "browser-url": ["browser"]
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "properties": {
+                                    "cvs": {
+                                        "properties": {
+                                            "repos": {
+                                                "description": "List of CVS repositories. (required)",
+                                                "type":"array",
+                                                "items": {
+                                                    "properties": {
+                                                        "root": {
+                                                            "description": "The CVS connection string Jenkins uses to connect to the server. The format is :protocol:user@host:path (required)",
+                                                            "type": "string"
+                                                        },
+                                                        "locations": {
+                                                            "description": "List of locations. (required)",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "description": "Type of location.",
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "HEAD", "BRANCH", "TAG"
+                                                                        ],
+                                                                        "default": "HEAD"
+                                                                    },
+                                                                    "name": {
+                                                                        "description": "Name of location. Only valid in case of ‘BRANCH’ or ‘TAG’ location type. (default ‘’)",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "use-head": {
+                                                                        "description": "Use Head if not found. Only valid in case of ‘BRANCH’ or ‘TAG’ location type. (default false)",
+                                                                        "type": "boolean",
+                                                                        "default": false
+                                                                    },
+                                                                    "modules": {
+                                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "excluded-regions": {
+                                                            "description": "Patterns for excluding regions. (optional)"
+                                                        },
+                                                        "compression-level": {
+                                                            "description": "Compression level. Must be a number between -1 and 9 inclusive. Choose -1 for System Default. (default -1)"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "use-update": {
+                                                "description": "If true, Jenkins will use ‘cvs update’ whenever possible for builds. This makes a build faster. But this also causes the artifacts from the previous build to remain in the file system when a new build starts, making it not a true clean build. (default true)",
+                                                "type": "boolean",
+                                                "default": true
+                                            },
+                                            "prune-empty": {
+                                                "description": "Remove empty directories after checkout using the CVS ‘-P’ option. (default true)",
+                                                "type":"boolean",
+                                                "default": true
+                                            },
+                                            "skip-changelog": {
+                                                "description": "Prevent the changelog being generated after checkout has completed. (default false)",
+                                                "type":"boolean",
+                                                "default": false
+                                            },
+                                            "show-all-output": {
+                                                "description": "Instructs CVS to show all logging output. CVS normally runs in quiet mode but this option disables that. (default false)",
+                                                "type": "boolean",
+                                                "default": false
+                                            },
+                                            "clean-checkout ": {
+                                                "description": "Perform clean checkout on failed update. (default false)",
+                                                "type": "boolean",
+                                                "default": false
+                                            },
+                                            "clean-copy": {
+                                                "description": "Force clean copy for locally modified files. (default false)",
+                                                "type": "boolean",
+                                                "default": false
+                                            }
+                                        },
+                                        "dependencies": {
+                                            "browser-url": ["browser"]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "properties": {
+                            "bool":{
+                                "properties": {
+                                    "name": {
+                                        "description": "the name of the parameter",
+                                        "type": "string"
+                                    },
+                                    "default":{
+                                        "description": "the default value of the parameter (optional)",
+                                        "type":"string"
+                                    },
+                                    "decription": {
+                                        "description": "a description of the parameter (optional)",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "properties": {
+                            "choice": {
+                                "properties": {
+                                    "name": {
+                                        "description": "the name of the parameter",
+                                        "type": "string"
+                                    },
+                                    "choices":{
+                                        "description": "the available choices, first one is the default one.",
+                                        "type":"array"
+                                    },
+                                    "decription": {
+                                        "description": "a description of the parameter (optional)",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
