@@ -78,7 +78,8 @@
                 "raw":{
                     "description": "If present, this section should contain a single xml entry. This XML will be inserted at the top-level of the Job definition.",
                     "type": "string"
-                }
+                },
+                "parameters": { "$ref": "#/definitions/parameters"}
             },
             "required": [
                 "name","project-type"
@@ -89,6 +90,133 @@
         }
     },
     "definitions": {
+        "bzr": {
+                "properties": {
+                    "bzr": {
+                        "properties": {
+                            "url": {
+                                "description": "URL of the bzr branch (required)",
+                                "type":"string"
+                            },
+                            "clean-tree": {
+                                "description": "Clean up the workspace (using bzr) before pulling the branch (default false)",
+                                "type": "boolean",
+                                "default": false
+                            },
+                            "lightweight-checkout": {
+                                "description": "Use a lightweight checkout instead of a full branch (default false)",
+                                "type":"boolean",
+                                "default": false
+                            },
+                            "browser": {
+                                "description": "The repository browser to use.",
+                                "enum": [
+                                    "auto","loggerhead","opengrok"
+                                ],
+                                "default": "auto"
+                            },
+                            "browser-url": {
+                                "description": "URL for the repository browser (required if browser is set).",
+                                "type": "string"
+                            },
+                            "opengrok-root-module": {
+                                "description": "Root module for OpenGrok (required if browser is opengrok).",
+                                "type": "string"
+                            }
+                        },
+                        "dependencies": {
+                            "browser-url": ["browser"]
+                        }
+                    }
+                }
+            },
+        "cvs": {
+                "properties": {
+                    "cvs": {
+                        "properties": {
+                            "repos": {
+                                "description": "List of CVS repositories. (required)",
+                                "type":"array",
+                                "items": {
+                                    "properties": {
+                                        "root": {
+                                            "description": "The CVS connection string Jenkins uses to connect to the server. The format is :protocol:user@host:path (required)",
+                                            "type": "string"
+                                        },
+                                        "locations": {
+                                            "description": "List of locations. (required)",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "type": {
+                                                        "description": "Type of location.",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "HEAD", "BRANCH", "TAG"
+                                                        ],
+                                                        "default": "HEAD"
+                                                    },
+                                                    "name": {
+                                                        "description": "Name of location. Only valid in case of ‘BRANCH’ or ‘TAG’ location type. (default ‘’)",
+                                                        "type": "string"
+                                                    },
+                                                    "use-head": {
+                                                        "description": "Use Head if not found. Only valid in case of ‘BRANCH’ or ‘TAG’ location type. (default false)",
+                                                        "type": "boolean",
+                                                        "default": false
+                                                    },
+                                                    "modules": {
+                                                        
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "excluded-regions": {
+                                            "description": "Patterns for excluding regions. (optional)"
+                                        },
+                                        "compression-level": {
+                                            "description": "Compression level. Must be a number between -1 and 9 inclusive. Choose -1 for System Default. (default -1)"
+                                        }
+                                    }
+                                }
+                            },
+                            "use-update": {
+                                "description": "If true, Jenkins will use ‘cvs update’ whenever possible for builds. This makes a build faster. But this also causes the artifacts from the previous build to remain in the file system when a new build starts, making it not a true clean build. (default true)",
+                                "type": "boolean",
+                                "default": true
+                            },
+                            "prune-empty": {
+                                "description": "Remove empty directories after checkout using the CVS ‘-P’ option. (default true)",
+                                "type":"boolean",
+                                "default": true
+                            },
+                            "skip-changelog": {
+                                "description": "Prevent the changelog being generated after checkout has completed. (default false)",
+                                "type":"boolean",
+                                "default": false
+                            },
+                            "show-all-output": {
+                                "description": "Instructs CVS to show all logging output. CVS normally runs in quiet mode but this option disables that. (default false)",
+                                "type": "boolean",
+                                "default": false
+                            },
+                            "clean-checkout ": {
+                                "description": "Perform clean checkout on failed update. (default false)",
+                                "type": "boolean",
+                                "default": false
+                            },
+                            "clean-copy": {
+                                "description": "Force clean copy for locally modified files. (default false)",
+                                "type": "boolean",
+                                "default": false
+                            }
+                        },
+                        "dependencies": {
+                            "browser-url": ["browser"]
+                        }
+                    }
+                }
+            },
         "scm":{
             "properties": {
                 "name": {
@@ -98,135 +226,56 @@
                     "type": "array",
                     "items": {
                         "oneOf": [
-                            {
-                                "properties": {
-                                    "bzr": {
-                                        "properties": {
-                                            "url": {
-                                                "description": "URL of the bzr branch (required)",
-                                                "type":"string"
-                                            },
-                                            "clean-tree": {
-                                                "description": "Clean up the workspace (using bzr) before pulling the branch (default false)",
-                                                "type": "boolean",
-                                                "default": false
-                                            },
-                                            "lightweight-checkout": {
-                                                "description": "Use a lightweight checkout instead of a full branch (default false)",
-                                                "type":"boolean",
-                                                "default": false
-                                            },
-                                            "browser": {
-                                                "description": "The repository browser to use.",
-                                                "enum": [
-                                                    "auto","loggerhead","opengrok"
-                                                ],
-                                                "default": "auto"
-                                            },
-                                            "browser-url": {
-                                                "description": "URL for the repository browser (required if browser is set).",
-                                                "type": "string"
-                                            },
-                                            "opengrok-root-module": {
-                                                "description": "Root module for OpenGrok (required if browser is opengrok).",
-                                                "type": "string"
-                                            }
-                                        },
-                                        "dependencies": {
-                                            "browser-url": ["browser"]
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                "properties": {
-                                    "cvs": {
-                                        "properties": {
-                                            "repos": {
-                                                "description": "List of CVS repositories. (required)",
-                                                "type":"array",
-                                                "items": {
-                                                    "properties": {
-                                                        "root": {
-                                                            "description": "The CVS connection string Jenkins uses to connect to the server. The format is :protocol:user@host:path (required)",
-                                                            "type": "string"
-                                                        },
-                                                        "locations": {
-                                                            "description": "List of locations. (required)",
-                                                            "type": "array",
-                                                            "items": {
-                                                                "properties": {
-                                                                    "type": {
-                                                                        "description": "Type of location.",
-                                                                        "type": "string",
-                                                                        "enum": [
-                                                                            "HEAD", "BRANCH", "TAG"
-                                                                        ],
-                                                                        "default": "HEAD"
-                                                                    },
-                                                                    "name": {
-                                                                        "description": "Name of location. Only valid in case of ‘BRANCH’ or ‘TAG’ location type. (default ‘’)",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "use-head": {
-                                                                        "description": "Use Head if not found. Only valid in case of ‘BRANCH’ or ‘TAG’ location type. (default false)",
-                                                                        "type": "boolean",
-                                                                        "default": false
-                                                                    },
-                                                                    "modules": {
-                                                                        
-                                                                    }
-                                                                }
-                                                            }
-                                                        },
-                                                        "excluded-regions": {
-                                                            "description": "Patterns for excluding regions. (optional)"
-                                                        },
-                                                        "compression-level": {
-                                                            "description": "Compression level. Must be a number between -1 and 9 inclusive. Choose -1 for System Default. (default -1)"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "use-update": {
-                                                "description": "If true, Jenkins will use ‘cvs update’ whenever possible for builds. This makes a build faster. But this also causes the artifacts from the previous build to remain in the file system when a new build starts, making it not a true clean build. (default true)",
-                                                "type": "boolean",
-                                                "default": true
-                                            },
-                                            "prune-empty": {
-                                                "description": "Remove empty directories after checkout using the CVS ‘-P’ option. (default true)",
-                                                "type":"boolean",
-                                                "default": true
-                                            },
-                                            "skip-changelog": {
-                                                "description": "Prevent the changelog being generated after checkout has completed. (default false)",
-                                                "type":"boolean",
-                                                "default": false
-                                            },
-                                            "show-all-output": {
-                                                "description": "Instructs CVS to show all logging output. CVS normally runs in quiet mode but this option disables that. (default false)",
-                                                "type": "boolean",
-                                                "default": false
-                                            },
-                                            "clean-checkout ": {
-                                                "description": "Perform clean checkout on failed update. (default false)",
-                                                "type": "boolean",
-                                                "default": false
-                                            },
-                                            "clean-copy": {
-                                                "description": "Force clean copy for locally modified files. (default false)",
-                                                "type": "boolean",
-                                                "default": false
-                                            }
-                                        },
-                                        "dependencies": {
-                                            "browser-url": ["browser"]
-                                        }
-                                    }
-                                }
-                            }
+                            { "$ref": "#/definitions/bzr" },
+                            { "$ref": "#/definitions/cvs" }
                         ]
                     }
+                }
+            }
+        },
+        "bool": {
+            "properties": {
+                "bool":{
+                    "properties": {
+                        "name": {
+                            "description": "the name of the parameter",
+                            "type": "string"
+                        },
+                        "default":{
+                            "description": "the default value of the parameter (optional)",
+                            "type":"string"
+                        },
+                        "decription": {
+                            "description": "a description of the parameter (optional)",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name"
+                    ]
+                }
+            }
+        },
+        "choice": {
+            "properties": {
+                "choice": {
+                    "properties": {
+                        "name": {
+                            "description": "the name of the parameter",
+                            "type": "string"
+                        },
+                        "choices":{
+                            "description": "the available choices, first one is the default one.",
+                            "type":"array"
+                        },
+                        "decription": {
+                            "description": "a description of the parameter (optional)",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name"
+                    ]
                 }
             }
         },
@@ -234,52 +283,8 @@
             "type": "array",
             "items": {
                 "oneOf": [
-                    {
-                        "properties": {
-                            "bool":{
-                                "properties": {
-                                    "name": {
-                                        "description": "the name of the parameter",
-                                        "type": "string"
-                                    },
-                                    "default":{
-                                        "description": "the default value of the parameter (optional)",
-                                        "type":"string"
-                                    },
-                                    "decription": {
-                                        "description": "a description of the parameter (optional)",
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "name"
-                                ]
-                            }
-                        }
-                    },
-                    {
-                        "properties": {
-                            "choice": {
-                                "properties": {
-                                    "name": {
-                                        "description": "the name of the parameter",
-                                        "type": "string"
-                                    },
-                                    "choices":{
-                                        "description": "the available choices, first one is the default one.",
-                                        "type":"array"
-                                    },
-                                    "decription": {
-                                        "description": "a description of the parameter (optional)",
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "name"
-                                ]
-                            }
-                        }
-                    }
+                    { "$ref": "#/definitions/bool" },
+                    { "$ref": "#/definitions/choice" }
                 ]
             }
         }
