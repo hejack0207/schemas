@@ -1,46 +1,60 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://org.sharp/schemas/wf/1.0" xmlns="http://org.sharp/schemas/wf/1.0">
 
-    <xs:element name="wf" type="wfType"></xs:element>
+    <xs:element name="wf">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="workers" type="WORKERS"></xs:element>
+                <xs:element name="flows" type="FLOWS"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:key>
+            <xs:selector xpath="workers/cl-tool"></xs:selector>
+            <xs:field xpath="name"></xs:field>
+        </xs:key>
+        <xs:key>
+            <xs:selector xpath="workers/cl-tool"></xs:selector>
+            <xs:field xpath="name"></xs:field>
+        </xs:key>
+    </xs:element>
 
-    <xs:complexType name="wfType">
-        <xs:sequence>
-            <xs:element name="workers" type="workersType"></xs:element>
-            <xs:element name="flows" type="flowsType"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="workersType">
+    <xs:complexType name="WORKERS">
         <xs:all>
-            <xs:element name="cl-tool" type="cltoolType"></xs:element>
+            <xs:element name="cl-tool">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="name"></xs:element>
+                        <xs:element name="inputs" type="INPUTS"></xs:element>
+                        <xs:element name="outputs" type="OUTPUTS">
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:key>
+                    <xs:selector xpath="outputs/output"></xs:selector>
+                    <xs:field xpath="status-code"></xs:field>
+                </xs:key>
+            </xs:element>
         </xs:all>
     </xs:complexType>
-    <xs:complexType name="flowsType">
+    <xs:complexType name="FLOWS">
         <xs:sequence>
-            <xs:element name="dataflow" type="dataflowType"></xs:element>
+            <xs:element name="dataflow" type="DATAFLOW"></xs:element>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="cltoolType">
+    <xs:complexType name="DATAFLOW"></xs:complexType>
+    <xs:complexType name="INPUTS">
         <xs:sequence>
-            <xs:element name="name"></xs:element>
-            <xs:element name="inputs" type="inputsType"></xs:element>
-            <xs:element name="outputs" type="outputsType">
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="dataflowType"></xs:complexType>
-    <xs:complexType name="inputsType">
-        <xs:sequence>
-            <xs:element name="input">
+            <xs:element name="input" maxOccurs="unbounded">
                 <xs:complexType>
 
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="outputsType">
+    <xs:complexType name="OUTPUTS">
         <xs:sequence>
-            <xs:element name="output">
+            <xs:element name="output" maxOccurs="unbounded">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="status-code" type="xs:int"></xs:element>
