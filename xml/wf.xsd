@@ -1,5 +1,52 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://org.sharp/schemas/wf/1.0" xmlns="http://org.sharp/schemas/wf/1.0">
+
     <xs:element name="wf" type="wfType"></xs:element>
-    <xs:complexType name="wfType"></xs:complexType>
+
+    <xs:complexType name="wfType">
+        <xs:sequence>
+            <xs:element name="workers" type="workersType"></xs:element>
+            <xs:element name="flows" type="flowsType"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="workersType">
+        <xs:all>
+            <xs:element name="cl-tool" type="cltoolType"></xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="flowsType">
+        <xs:sequence>
+            <xs:element name="dataflow" type="dataflowType"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="cltoolType">
+        <xs:sequence>
+            <xs:element name="name"></xs:element>
+            <xs:element name="inputs" type="inputsType"></xs:element>
+            <xs:element name="outputs" type="outputsType">
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="dataflowType"></xs:complexType>
+    <xs:complexType name="inputsType">
+        <xs:sequence>
+            <xs:element name="input">
+                <xs:complexType>
+
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="outputsType">
+        <xs:sequence>
+            <xs:element name="output">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="status-code" type="xs:int"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
