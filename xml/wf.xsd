@@ -44,7 +44,7 @@
     </xs:complexType>
 
     <xs:complexType name="DATAFLOW"></xs:complexType>
-    
+
     <xs:complexType name="INPUTS">
         <xs:sequence>
             <xs:element name="input" maxOccurs="unbounded">
