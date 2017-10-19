@@ -4,7 +4,26 @@
     <xs:element name="wf">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="workers" type="WORKERS"></xs:element>
+                <xs:element name="workers">
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="cl-tool">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="name"></xs:element>
+                                        <xs:element name="inputs" type="INPUTS"></xs:element>
+                                        <xs:element name="outputs" type="OUTPUTS">
+                                            <xs:key>
+                                                <xs:selector xpath="outputs/output"></xs:selector>
+                                                <xs:field xpath="status-code"></xs:field>
+                                            </xs:key>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="flows" type="FLOWS"></xs:element>
             </xs:sequence>
         </xs:complexType>
@@ -18,24 +37,6 @@
         </xs:key>
     </xs:element>
 
-    <xs:complexType name="WORKERS">
-        <xs:all>
-            <xs:element name="cl-tool">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="name"></xs:element>
-                        <xs:element name="inputs" type="INPUTS"></xs:element>
-                        <xs:element name="outputs" type="OUTPUTS">
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-                <xs:key>
-                    <xs:selector xpath="outputs/output"></xs:selector>
-                    <xs:field xpath="status-code"></xs:field>
-                </xs:key>
-            </xs:element>
-        </xs:all>
-    </xs:complexType>
     <xs:complexType name="FLOWS">
         <xs:sequence>
             <xs:element name="dataflow" type="DATAFLOW"></xs:element>
@@ -43,6 +44,7 @@
     </xs:complexType>
 
     <xs:complexType name="DATAFLOW"></xs:complexType>
+    
     <xs:complexType name="INPUTS">
         <xs:sequence>
             <xs:element name="input" maxOccurs="unbounded">
@@ -52,6 +54,7 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
+
     <xs:complexType name="OUTPUTS">
         <xs:sequence>
             <xs:element name="output" maxOccurs="unbounded">
