@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://org.sharp/schemas/wf/1.0" xmlns="http://org.sharp/schemas/wf/1.0">
+    <xs:element name="wf" type="wfType"></xs:element>
+    <xs:complexType name="wfType"></xs:complexType>
+</xs:schema>

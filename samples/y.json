@@ -1,0 +1,19 @@
+{
+    "version": "2.0",
+    "services": {
+        "abc": {
+            "links": [
+                "aaa:bbb"
+            ]
+        },
+        "mysql": {
+            "build": {
+                "context": "./",
+                "args":{
+                    "aaa": 134
+                }
+            },
+            "restart": ""
+        }
+    }
+}
