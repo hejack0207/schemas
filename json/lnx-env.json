@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type":"object",
+    "properties": {
+        "repo-url": {
+            "type": "string",
+            "format":"uri"
+        },
+        "programs": {
+            "type": "array",
+            "items": {
+                "type":"string"
+            }
+        },
+        "program-settings": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/program-setting"
+            }
+        }
+    },
+    "definitions": {
+        "program-setting": {
+            "type":"object",
+            "properties": {
+                "name": {
+                    "type":"string"
+                },
+                "inherit-type": {
+                    "type": "string",
+                    "enum": [
+                        "extend", "rewrite"
+                    ],
+                    "default": "extend"
+                },
+                "files": {
+                    "type":"array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required":[
+                "name"
+            ]
+        }
+    }
+}

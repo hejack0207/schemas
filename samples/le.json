@@ -1,0 +1,29 @@
+{
+    "$schema": "../json/lnx-env.json",
+    "repo-url": "https://github.com/hejack0207/lnx-env.data",
+    "programs": [
+        "zsh","vim","tmux","task","ansible","git"
+    ],
+    "program-settings": [
+        {
+            "name": "zsh",
+            "files": [
+                "~/.zshrc"
+            ]
+        },
+        {
+            "name": "vim",
+            "files": [
+                "~/.vimrc",
+                "~/.vim"
+            ]
+        },
+        {
+            "name": "task",
+            "files": [
+                "~/.taskrc",
+                "~/.task"
+            ]
+        }
+    ]
+}
