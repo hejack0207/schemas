@@ -1,0 +1,11 @@
+{
+    "$schema": "../json/ansible-playbook.json",
+    "playbook": [
+        {
+            "hosts": "aaa"
+        },
+        {
+            "import_playbook": "ddd"
+        }
+    ]
+}

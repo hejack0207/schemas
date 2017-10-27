@@ -1,10 +1,292 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "type":"object",
+    "type": "object",
     "properties": {
-
+        "playbook": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "#/definitions/play"
+                    },
+                    {
+                        "$ref": "#/definitions/play_import"
+                    }
+                ]
+            }
+        }
     },
     "definitions": {
-
+        "play": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/play_only"
+                },
+                {
+                    "$ref": "#/definitions/play_and_task"
+                }
+            ]
+        },
+        "task": {
+            "oneOf": [
+                {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/task_only"
+                        },
+                        {
+                            "$ref": "#/definitions/play_and_task"
+                        }
+                    ]
+                },
+                {
+                    "$ref": "#/definitions/import_or_include_tasks"
+                },
+                {
+                    "properties": {
+                        "import_role": {
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "include_role": {
+                            "type": "string"
+                        },
+                        "vars": {
+                            "type": "object"
+                        }
+                    }
+                }
+            ]
+        },
+        "handler": {
+            "anyOf": [
+                {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/task"
+                        },
+                        {
+                            "properties": {
+                                "listen": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "$ref": "#/definitions/import_or_include_tasks"
+                }
+            ]
+        },
+        "play_import": {
+            "properties": {
+                "import_playbook": {
+                    "type": "string"
+                }
+            }
+        },
+        "play_only": {
+            "properties": {
+                "hosts": {
+                    "description": "The hosts line is a list of one or more groups or host patterns, separated by colons"
+                },
+                "order": {
+                    "enum": [
+                        "inventory",
+                        "reverse_inventory",
+                        "sorted",
+                        "reverse_sorted",
+                        "shuffle"
+                    ]
+                },
+                "strategy": {
+                    "enum": [
+                        "linear",
+                        "serial",
+                        "free"
+                    ],
+                    "default": "linear"
+                },
+                "pre_tasks": {},
+                "handlers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handler"
+                    }
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "role name"
+                            },
+                            {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "role": {
+                                                "type": "string",
+                                                "description": "role file full qualified path"
+                                            }
+                                        },
+                                        "additionalProperties": true
+                                    },
+                                    {
+                                        "$ref": "#/definitions/taggable"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "tasks": {
+                    "type":"array",
+                    "items": {
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/task"
+                            },
+                            {
+                                "$ref": "#/definitions/conditional"
+                            }
+                        ]
+                    }
+                },
+                "post_tasks": {}
+            }
+        },
+        "task_only": {
+            "properties": {
+                "name": {},
+                "notify": {
+                    "type": "array"
+                },
+                "register": {
+                    "type": "string"
+                },
+                "ignore_errors": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "play_and_task": {
+            "properties": {
+                "remote_user": {},
+                "become": {
+                    "type": "boolean"
+                },
+                "become_user": {
+                    "type": "string"
+                },
+                "become_method": {
+                    "type": "string"
+                }
+            }
+        },
+        "import_or_include_tasks": {
+            "oneOf": [
+                {
+                    "allOf": [
+                        {
+                            "properties": {
+                                "import_tasks": {
+                                    "type": "string"
+                                },
+                                "vars": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        {
+                            "$ref": "#/definitions/conditional"
+                        },
+                        {
+                            "$ref": "#/definitions/taggable"
+                        }
+                    ]
+                },
+                {
+                    "allOf": [
+                        {
+                            "properties": {
+                                "include_tasks": {
+                                    "type": "string"
+                                },
+                                "vars": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        {
+                            "$ref": "#/definitions/conditional"
+                        },
+                        {
+                            "$ref": "#/definitions/taggable"
+                        }
+                    ]
+                }
+            ]
+        },
+        "conditional": {
+            "properties": {
+                "when": {
+                    "type": "string"
+                },
+                "with_items": {
+                    "type": "string"
+                },
+                "with_dict": {
+                    "type": "string"
+                }
+            }
+        },
+        "taggable": {
+            "properties": {
+                "tags": {
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "with_variables": {
+            "properties": {
+                "vars": {
+                    "type": "object"
+                },
+                "varfiles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "loops": {},
+        "block": {
+            "properties": {
+                "block": {
+                    "items": {
+                        "$ref": "#/definitions/task"
+                    }
+                },
+                "rescue": {
+                    "items": {
+                        "$ref": "#/definitions/task"
+                    }
+                },
+                "always": {
+                    "items": {
+                        "$ref": "#/definitions/task"
+                    }
+                }
+            }
+        }
     }
 }
