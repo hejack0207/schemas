@@ -5,20 +5,28 @@
         "playbook": {
             "type": "array",
             "items": {
-                "anyOf": [
-                    {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "import_play": {
+                        "type": "string"
+                    }
+                },
+                "dependencies": {
+                    "name": {
                         "$ref": "#/definitions/play"
                     },
-                    {
+                    "import_play": {
                         "$ref": "#/definitions/play_import"
                     }
-                ]
+                }
             }
         }
     },
     "definitions": {
         "play": {
-            "oneOf": [
+            "allOf": [
                 {
                     "$ref": "#/definitions/play_only"
                 },
@@ -28,8 +36,25 @@
             ]
         },
         "task": {
-            "oneOf": [
-                {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "import_tasks": {
+                    "type": "string"
+                },
+                "include_tasks": {
+                    "type": "string"
+                },
+                "import_role": {
+                    "type": "string"
+                },
+                "include_role": {
+                    "type": "string"
+                }
+            },
+            "dependencies": {
+                "name": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/task_only"
@@ -39,31 +64,35 @@
                         }
                     ]
                 },
-                {
+                "import_tasks": {
                     "$ref": "#/definitions/import_or_include_tasks"
                 },
-                {
-                    "properties": {
-                        "import_role": {
-                            "type": "string"
-                        }
-                    }
+                "include_tasks": {
+                    "$ref": "#/definitions/import_or_include_tasks"
                 },
-                {
+                "include_role": {
                     "properties": {
-                        "include_role": {
-                            "type": "string"
-                        },
                         "vars": {
                             "type": "object"
                         }
                     }
                 }
-            ]
+            }
         },
         "handler": {
-            "anyOf": [
-                {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "import_tasks": {
+                    "type": "string"
+                },
+                "include_tasks": {
+                    "type": "string"
+                }
+            },
+            "dependencies": {
+                "name": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/task"
@@ -77,10 +106,13 @@
                         }
                     ]
                 },
-                {
+                "import_tasks": {
+                    "$ref": "#/definitions/import_or_include_tasks"
+                },
+                "include_tasks": {
                     "$ref": "#/definitions/import_or_include_tasks"
                 }
-            ]
+            }
         },
         "play_import": {
             "properties": {
@@ -121,32 +153,24 @@
                 "roles": {
                     "type": "array",
                     "items": {
-                        "oneOf": [
+                        "allOf": [
                             {
-                                "type": "string",
-                                "description": "role name"
+                                "properties": {
+                                    "role": {
+                                        "type": "string",
+                                        "description": "role file full qualified path"
+                                    }
+                                },
+                                "additionalProperties": true
                             },
                             {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "role": {
-                                                "type": "string",
-                                                "description": "role file full qualified path"
-                                            }
-                                        },
-                                        "additionalProperties": true
-                                    },
-                                    {
-                                        "$ref": "#/definitions/taggable"
-                                    }
-                                ]
+                                "$ref": "#/definitions/taggable"
                             }
                         ]
                     }
                 },
                 "tasks": {
-                    "type":"array",
+                    "type": "array",
                     "items": {
                         "allOf": [
                             {
@@ -162,18 +186,25 @@
             }
         },
         "task_only": {
-            "properties": {
-                "name": {},
-                "notify": {
-                    "type": "array"
+            "allOf": [
+                {
+                    "properties": {
+                        "name": {},
+                        "notify": {
+                            "type": "array"
+                        },
+                        "register": {
+                            "type": "string"
+                        },
+                        "ignore_errors": {
+                            "type": "boolean"
+                        }
+                    }
                 },
-                "register": {
-                    "type": "string"
-                },
-                "ignore_errors": {
-                    "type": "boolean"
+                {
+                    "$ref": "#/definitions/block"
                 }
-            }
+            ]
         },
         "play_and_task": {
             "properties": {
@@ -190,46 +221,19 @@
             }
         },
         "import_or_include_tasks": {
-            "oneOf": [
+            "allOf": [
                 {
-                    "allOf": [
-                        {
-                            "properties": {
-                                "import_tasks": {
-                                    "type": "string"
-                                },
-                                "vars": {
-                                    "type": "object"
-                                }
-                            }
-                        },
-                        {
-                            "$ref": "#/definitions/conditional"
-                        },
-                        {
-                            "$ref": "#/definitions/taggable"
+                    "properties": {
+                        "vars": {
+                            "type": "object"
                         }
-                    ]
+                    }
                 },
                 {
-                    "allOf": [
-                        {
-                            "properties": {
-                                "include_tasks": {
-                                    "type": "string"
-                                },
-                                "vars": {
-                                    "type": "object"
-                                }
-                            }
-                        },
-                        {
-                            "$ref": "#/definitions/conditional"
-                        },
-                        {
-                            "$ref": "#/definitions/taggable"
-                        }
-                    ]
+                    "$ref": "#/definitions/conditional"
+                },
+                {
+                    "$ref": "#/definitions/taggable"
                 }
             ]
         },
