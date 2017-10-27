@@ -272,7 +272,67 @@
                 }
             }
         },
-        "loops": {},
+        "loops": {
+            "properties": {
+                "with_items": {
+                    "type": "array"
+                },
+                "with_nested": {
+                    "type": "array",
+                    "items": {
+                        "type": "array"
+                    }
+                },
+                "with_dict": {
+                    "type": "object"
+                },
+                "with_file": {
+                    "type": "array"
+                },
+                "with_fileglob": {
+                    "type": "array"
+                },
+                "with_filetree": {
+                    "type": "string"
+                },
+                "with_together": {
+                    "type": "array"
+                },
+                "with_subelements": {
+                    "type": "array"
+                },
+                "with_sequence": {
+
+                },
+                "with_random_choice": {
+                    "type": "array"
+                },
+                "until": {
+
+                },
+                "with_first_found": {
+
+                },
+                "with_lines": {
+
+                },
+                "with_indexed_items": {
+
+                },
+                "with_ini": {
+
+                },
+                "with_flattened": {
+
+                },
+                "with_inventory_hostnames": {
+
+                },
+                "loop_control": {
+                    
+                }
+            }
+        },
         "block": {
             "properties": {
                 "block": {
