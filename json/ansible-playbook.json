@@ -61,6 +61,9 @@
                         },
                         {
                             "$ref": "#/definitions/play_and_task"
+                        },
+                        {
+                            "$ref": "ansible-modules.json"
                         }
                     ]
                 },
@@ -124,6 +127,7 @@
         "play_only": {
             "properties": {
                 "hosts": {
+                    "type": "string",
                     "description": "The hosts line is a list of one or more groups or host patterns, separated by colons"
                 },
                 "order": {

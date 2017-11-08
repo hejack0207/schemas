@@ -19,6 +19,9 @@
             }
         }
     },
+    "required": [
+        "repo-url"
+    ],
     "definitions": {
         "program-setting": {
             "type":"object",
