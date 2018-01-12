@@ -31,7 +31,7 @@
             "properties": {
                 "layout": {
                     "enum": [
-                        "a"
+                        "even-horizontal","even-vertical","main-horizontal","main-vertical","tiled"
                     ]
                 },
                 "panes": {
