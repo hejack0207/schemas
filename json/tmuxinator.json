@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type":"object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "root": {
+            "type": "string"
+        },
+        "windows": {
+            "type": "array",
+            "items": [
+                { "$ref": "#/definitions/window" }
+            ]
+        },
+        "pre_window": { "type": "string"},
+        "attach": { "type": "boolean"},
+        "on_project_start": { "type": "string"}
+    },
+    "required": [
+        "name","root"
+    ],
+    "definitions": {
+        "window": {
+            "additionalProperties": {
+                "$ref": "#/definitions/window_properties"
+            }
+        },
+        "window_properties": {
+            "properties": {
+                "layout": {
+                    "enum": [
+                        "a"
+                    ]
+                },
+                "panes": {
+                    "type": "array",
+                    "items": [
+                        { "$ref": "#/definitions/pane" },
+                        { "type": "string" }
+                    ]
+                },
+                "root": { "type": "string" }
+            }
+        }
+    }
+}

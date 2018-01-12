@@ -20819,10 +20819,8 @@
             "description": "The username to authenticate with the SANtricity WebServices Proxy or embedded REST API.",
             "type": "string"
           },
-          "hosts": {
-            "description": "a list of host names/labels to add to the group",
-            "type": "string"
-          },
+          "description": "a list of host names/labels to add to the group",
+          "type": "string",
           "id": {
             "description": "The id number of the host group to manage. Either this or `name' must be supplied.",
             "type": "string"
