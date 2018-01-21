@@ -1,0 +1,94 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type":"object",
+    "properties": {
+        "version": {
+            "type": "number",
+            "enum": [
+                0.4
+            ]
+        },
+        "env": {
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "networks": {
+            "$ref": "#/definitions/networks"
+        },
+        "targets": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "array"
+                }
+            }
+        },
+        "commands": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "desc": {
+                        "type": "string"
+                    },
+                    "run": {
+                        "type": "string"
+                    },
+                    "serial": {
+                        "type": "number"
+                    },
+                    "once": {
+                        "type": "boolean"
+                    },
+                    "local": {
+                        "type": "string"
+                    },
+                    "upload": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "src": {
+                                    "type": "string"
+                                },
+                                "dst": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "stdin": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        }
+    },
+    "required": [
+        "networks","commands"
+    ],
+    "definitions": {
+        "networks": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/network_properties"
+            }
+        },
+        "network_properties": {
+            "properties": {
+                "hosts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "inventory": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+    
+}
