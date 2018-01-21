@@ -5,6 +5,11 @@
         "SUP_USER": "root"
     },
     "networks": {
+        "local": {
+            "hosts": [
+                "127.0.0.1"
+            ]
+        },
         "test": {
             "hosts": [
                 "10.0.52.1"
@@ -21,6 +26,9 @@
         "showTime":{
             "desc": "show current time of host",
             "run": "date"
+        },
+        "ping":{
+            "local": "ping 10.0.50.166"
         }
     }
     
