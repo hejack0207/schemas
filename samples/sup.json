@@ -5,17 +5,13 @@
         "SUP_USER": "root"
     },
     "networks": {
-        "local": {
-            "hosts": [
-                "127.0.0.1"
-            ]
-        },
         "test": {
             "hosts": [
-                "10.0.52.1"
+                "root@10.0.52.1"
             ]
         },
         "intgr": {
+            "user": "root",
             "hosts": [
                 "10.0.50.166",
                 "10.0.50.167"

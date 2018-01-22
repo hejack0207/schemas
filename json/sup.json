@@ -86,6 +86,9 @@
                 },
                 "inventory": {
                     "type": "string"
+                },
+                "user": {
+                    "type": "string"
                 }
             }
         }
