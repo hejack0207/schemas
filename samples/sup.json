@@ -25,6 +25,10 @@
         },
         "ping":{
             "local": "ping 10.0.50.166"
+        },
+        "shell": {
+            "stdin": true,
+            "run": "bash"
         }
     }
     
