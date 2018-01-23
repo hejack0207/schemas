@@ -1,26 +1,21 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "playbook": {
-            "type": "array",
-            "items": {
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "import_play": {
-                        "type": "string"
-                    }
-                },
-                "dependencies": {
-                    "name": {
-                        "$ref": "#/definitions/play"
-                    },
-                    "import_play": {
-                        "$ref": "#/definitions/play_import"
-                    }
-                }
+    "type": "array",
+    "items": {
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "import_play": {
+                "type": "string"
+            }
+        },
+        "dependencies": {
+            "name": {
+                "$ref": "#/definitions/play"
+            },
+            "import_play": {
+                "$ref": "#/definitions/play_import"
             }
         }
     },
