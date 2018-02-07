@@ -17,6 +17,8 @@
                 "layout": "even-horizontal",
                 "root": "",
                 "panes": [
+                    "ls",
+                    "pwd",
                     {
                         "xx":[
                             "ssss",
