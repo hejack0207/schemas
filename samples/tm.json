@@ -7,6 +7,12 @@
             "abc": "fork"
         },
         {
+            "123": [
+                "dddd",
+                "ffff"
+            ]
+        },
+        {
             "xx": {
                 "layout": "even-horizontal",
                 "root": "",
@@ -17,7 +23,9 @@
                             "bbbbbbbbbbbb"
                         ]
                     },
-                    "fix me"
+                    {
+                        "cc":"pppp"
+                    }
                 ]
             }   
         }
