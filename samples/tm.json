@@ -4,6 +4,9 @@
     "root": "fff",
     "windows": [
         {
+            "abc": "fork"
+        },
+        {
             "xx": {
                 "layout": "even-horizontal",
                 "root": "",

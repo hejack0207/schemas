@@ -27,7 +27,6 @@
         "windows": {
             "type": "array",
             "items": [
-                { "type": "string" },
                 { "$ref": "#/definitions/window" }
             ]
         },
@@ -40,9 +39,26 @@
     ],
     "definitions": {
         "window": {
-            "additionalProperties": {
-                "$ref": "#/definitions/window_properties"
-            }
+            "oneOf": [
+                {
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/window_properties"
+                    }
+                }
+            ]
         },
         "window_properties": {
             "properties": {
@@ -54,8 +70,12 @@
                 "panes": {
                     "type": "array",
                     "items": [
-                        { "$ref": "#/definitions/pane" },
-                        { "type": "string" }
+                        {
+                            "oneOf": [
+                                { "$ref": "#/definitions/pane" },
+                                { "type": "string" }
+                            ]
+                        }
                     ]
                 },
                 "root": { "type": "string" }
