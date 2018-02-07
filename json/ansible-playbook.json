@@ -6,7 +6,7 @@
             "name": {
                 "type": "string"
             },
-            "import_play": {
+            "import": {
                 "type": "string"
             }
         },
@@ -14,7 +14,7 @@
             "name": {
                 "$ref": "#/definitions/play"
             },
-            "import_play": {
+            "import": {
                 "$ref": "#/definitions/play_import"
             }
         }
@@ -58,7 +58,7 @@
                             "$ref": "#/definitions/play_and_task"
                         },
                         {
-                            "$ref": "ansible-modules.json"
+                            "$ref": "./ansible-modules.json"
                         }
                     ]
                 },

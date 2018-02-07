@@ -8,15 +8,32 @@
         "root": {
             "type": "string"
         },
+        "attach": { "type": "boolean"},
+        "socket_name" : { "type": "string" },
+        "tmux_options" : {
+            "type": "string"
+        },
+        "tmux_command" : {
+            "type": "string"
+        },
+
+        "on_project_start": { "type": "string"},
+        "on_project_first_start" : { "type": "string" },
+        "on_project_restart" : { "type": "string" },
+        "on_project_exit" : { "type": "string" },
+        "on_project_stop" : { "type": "string" },
+        "pre_window": { "type": "string"},
+
         "windows": {
             "type": "array",
             "items": [
+                { "type": "string" },
                 { "$ref": "#/definitions/window" }
             ]
         },
-        "pre_window": { "type": "string"},
-        "attach": { "type": "boolean"},
-        "on_project_start": { "type": "string"}
+        "startup_window" : {
+            "type": "string"
+        }
     },
     "required": [
         "name","root"
@@ -42,6 +59,14 @@
                     ]
                 },
                 "root": { "type": "string" }
+            }
+        },
+        "pane":{
+            "additionalItems": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
             }
         }
     }

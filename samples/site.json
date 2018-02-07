@@ -1,47 +1,12 @@
 [
     {
-        "name": "aaa",
-        "tasks": [
-            {
-                "name": "ccc",
-                "notify": [
-                    
-                ],
-                "block": [
-                    {
-                        "name": "ffff",
-                        "block": [
-                            
-                        ]
-                    }
-                ],
-                "rescue": [
-                    
-                ],
-                "always": [
-                    
-                ]
-            },
-            {
-                "name": "dddd",
-                "ignore_errors": false,
-                "notify": [
-                    "aaa", "bbb"
-                ]
-            }
-        ],
-        "handlers": [
-            {
-                "name": "ccc",
-                "listen": "fixme"
-            }
-        ]
-    },
-    {
-        "import_playbook": "ddd"
-    },
-    {
         "name": "ddd",
-        "order": "inventory"
+        "order": "inventory",
+        "tasks": [
+        ]
+        
+    },
+    {
+        "import": "aaa"
     }
 ]

@@ -1,0 +1,22 @@
+{
+    "$schema": "../json/tmuxinator.json",
+    "name": "ff",
+    "root": "fff",
+    "windows": [
+        {
+            "xx": {
+                "layout": "even-horizontal",
+                "root": "",
+                "panes": [
+                    {
+                        "xx":[
+                            "ssss",
+                            "bbbbbbbbbbbb"
+                        ]
+                    },
+                    "fix me"
+                ]
+            }   
+        }
+    ]
+}
