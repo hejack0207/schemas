@@ -1,0 +1,20 @@
+{
+    "$schema": "../json/datax.json",
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "column": [
+                            
+                        ]
+                    }
+                },
+                "writer": {
+                    "name": "streamwriter"
+                }
+            }
+        ]
+    }
+}

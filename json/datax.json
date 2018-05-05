@@ -1,0 +1,218 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "job": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "reader": {
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/definitions/streamreader"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/oraclereader"
+                                    }
+                                ]
+                            },
+                            "writer": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/definitions/streamwriter"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/oraclewriter"
+                                    }                                 
+                                ]
+                            }
+                        }
+                    }
+                },
+                "setting": {
+                    "type": "object",
+                    "properties": {
+                            "speed": {
+                                "type": "object",
+                                "properties": {
+                                    "channel": {
+                                        "type": "integer"
+                                    },
+                                    "byte": {
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "errorLimit": {
+                                "type": "object",
+                                "properties": {
+                                    "record": {
+                                        "type": "integer"
+                                    },
+                                    "percentage":{
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                    }
+                }    
+            }
+        }
+    },
+    "definitions": {
+        "streamreader":{
+            "title": "streamreader",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "enum": [
+                        "streamreader"
+                    ]
+                },
+                "parameter": {
+                    "type": "object",
+                    "properties": {
+                        "sliceRecordCount": {
+                            "type": "integer"
+                        },
+                        "column": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "oraclereader":{
+            "title": "oraclereader",
+            "type":"object",
+            "properties": {
+                "name": {
+                    "enum": [
+                        "oraclereader"
+                    ]
+                },
+                "parameter":{
+                    "type": "object",
+                    "properties": {
+                        "username": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        },
+                        "column": {
+                            "items":{
+                                "type": "string"
+                            }
+                        },
+                        "splitPk": {
+                            "type": "string"
+                        },
+                        "preSql":{
+                            "type": "string"
+                        },
+                        "connection": {
+                            "type": "object",
+                            "properties": {
+                                "jdbcUrl": {
+                                    "type": "string"
+                                },
+                                "table": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        },
+        "streamwriter":{
+            "title": "streamwriter",
+            "type":"object",
+            "properties": {
+                "name": {
+                    "enum": [
+                        "streamwriter"
+                    ]
+                },
+                "parameter":{
+                    "type": "object",
+                    "properties": {
+                        "encoding": {
+                            "enum": [
+                                "UTF-8"
+                            ]
+                        },
+                        "print": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+
+        },
+        "oraclewriter":{
+            "title": "oraclewriter",
+            "type":"object",
+            "properties": {
+                "name": {
+                    "enum": [
+                        "oraclewriter"
+                    ]
+                },
+                "parameter":{
+                    "type": "object",
+                    "properties": {
+                        "username": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        },
+                        "column": {
+                            "items":{
+                                "type": "string"
+                            }
+                        },
+                        "preSql":{
+                            "type": "string"
+                        },
+                        "connection": {
+                            "type": "object",
+                            "properties": {
+                                "jdbcUrl": {
+                                    "type": "string"
+                                },
+                                "table": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
