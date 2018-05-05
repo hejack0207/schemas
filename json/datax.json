@@ -126,6 +126,19 @@
                         "preSql":{
                             "type": "string"
                         },
+                        "where":{
+                            "type": "string"
+                        },
+                        "querySql":{
+                            "type": "string"
+                        },
+                        "fetchSize":{
+                            "type": "integer"
+                        },
+                        "session":{
+                            "type": "string",
+                            "pattern": "alter session set.*"
+                        },
                         "connection": {
                             "type": "object",
                             "properties": {
@@ -138,8 +151,17 @@
                                         "type": "string"
                                     }
                                 }
-                            }
+                            },
+                            "required": [
+                                "jdbcUrl","table"
+                            ]
                         }
+                    },
+                    "required":[
+                        "username","password","column"
+                    ],
+                    "default":{
+                        "fetchSize": 1024
                     }
                 }
             }
