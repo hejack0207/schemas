@@ -143,7 +143,8 @@
                             "type": "object",
                             "properties": {
                                 "jdbcUrl": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "pattern": "jdbc:oracle:thin:@.*:\\d*:\\w*"
                                 },
                                 "table": {
                                     "type": "array",
@@ -158,7 +159,7 @@
                         }
                     },
                     "required":[
-                        "username","password","column"
+                        "username","password","column","connection"
                     ],
                     "default":{
                         "fetchSize": 1024
@@ -222,7 +223,8 @@
                             "type": "object",
                             "properties": {
                                 "jdbcUrl": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "pattern": "jdbc:oracle:thin:@.*:\\d*:\\w*"
                                 },
                                 "table": {
                                     "type": "array",
@@ -230,9 +232,15 @@
                                         "type": "string"
                                     }
                                 }
-                            }
+                            },
+                            "required":[
+                                "jdbcUrl","table"
+                            ]
                         }
-                    }
+                    },
+                    "required":[
+                        "username","password","column","connection"
+                    ]
                 }
             }
         }
