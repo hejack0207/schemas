@@ -9,12 +9,12 @@
                         "username": "gjzspt",
                         "password": "12345678",
                         "column": [
-                            
+                            "*"
                         ],
                         "connection": {
                             "jdbcUrl": "jdbc:oracle:thin:@192.168.21.249:1521:gjzs",
                             "table": [
-                                
+                                "T_DGAP_RESOURCE"
                             ]
                         }
                     }
@@ -25,12 +25,12 @@
                         "username": "gjzspt_demo2",
                         "password": "Oe123qwe###",
                         "column": [
-                            
+                            "*"
                         ],
                         "connection": {
                             "jdbcUrl": "jdbc:oracle:thin:@10.0.52.1:1521:orcl",
                             "table": [
-                                
+                                "T_DGAP_RESOURCE"
                             ]
                         }
                     }

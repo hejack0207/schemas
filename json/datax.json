@@ -21,7 +21,7 @@
                                 ]
                             },
                             "writer": {
-                                "anyOf": [
+                                "oneOf": [
                                     {
                                         "$ref": "#/definitions/streamwriter"
                                     },
@@ -116,14 +116,13 @@
                             "type": "string"
                         },
                         "column": {
+                            "type": "array",
                             "items":{
                                 "type": "string"
-                            }
+                            },
+                            "minItems":1
                         },
-                        "splitPk": {
-                            "type": "string"
-                        },
-                        "preSql":{
+                        "splitPk":{
                             "type": "string"
                         },
                         "where":{
@@ -150,7 +149,8 @@
                                     "type": "array",
                                     "items": {
                                         "type": "string"
-                                    }
+                                    },
+                                    "minItems":1
                                 }
                             },
                             "required": [
@@ -212,12 +212,24 @@
                             "type": "string"
                         },
                         "column": {
+                            "type": "array",
                             "items":{
                                 "type": "string"
-                            }
+                            },
+                            "minItems":1
                         },
                         "preSql":{
                             "type": "string"
+                        },
+                        "postSql":{
+                            "type": "string"
+                        },
+                        "batchSize":{
+                            "type": "integer"
+                        },
+                        "session":{
+                            "type": "string",
+                            "pattern": "alter session set.*"
                         },
                         "connection": {
                             "type": "object",
@@ -230,14 +242,15 @@
                                     "type": "array",
                                     "items": {
                                         "type": "string"
-                                    }
+                                    },
+                                    "minItems":1
                                 }
                             },
-                            "required":[
+                            "required": [
                                 "jdbcUrl","table"
                             ]
                         }
-                    },
+                     },
                     "required":[
                         "username","password","column","connection"
                     ]
