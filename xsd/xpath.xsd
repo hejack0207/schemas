@@ -1,0 +1,218 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.sharpx.org/xpath" xmlns="http://www.sharpx.org/xpath">
+  <xs:element name="xpath" type="main"/>
+  <xs:complexType name="main">
+    <xs:sequence>
+      <xs:element name="expr" type="expr"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="locationPath">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="relativeLocationPath" type="relativeLocationPath"/>
+        <xs:element name="absoluteLocationPathNoroot" type="absoluteLocationPathNoroot"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="absoluteLocationPathNoroot">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="relativeLocationPath" type="relativeLocationPath"/>
+        <xs:element name="relativeLocationPath" type="relativeLocationPath"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="relativeLocationPath">
+    <xs:sequence>
+      <xs:element name="step" type="step"/>
+      <xs:choice>
+        <xs:sequence/>
+        <xs:element name="step" type="step"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="step">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="axisSpecifier" type="axisSpecifier"/>
+        <xs:element name="nodeTest" type="nodeTest"/>
+        <xs:element name="predicate" type="predicate"/>
+        <xs:element name="abbreviatedStep" type="abbreviatedStep"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="axisSpecifier">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="AxisName" type="xs:string"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="nodeTest">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="nameTest" type="nameTest"/>
+        <xs:element name="NodeType" type="xs:string"/>
+        <xs:element name="processing-instruction" type="xs:string"/>
+        <xs:element name="Literal" type="xs:string"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="predicate">
+    <xs:sequence>
+      <xs:element name="expr" type="expr"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="abbreviatedStep">
+    <xs:choice>
+      <xs:sequence/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="expr">
+    <xs:sequence>
+      <xs:element name="orExpr" type="orExpr"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="primaryExpr">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="variableReference" type="variableReference"/>
+        <xs:element name="expr" type="expr"/>
+        <xs:element name="Literal" type="xs:string"/>
+        <xs:element name="Number" type="xs:string"/>
+        <xs:element name="functionCall" type="functionCall"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="functionCall">
+    <xs:sequence>
+      <xs:element name="functionName" type="functionName"/>
+      <xs:element name="expr" type="expr"/>
+      <xs:element name="expr" type="expr"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="unionExprNoRoot">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="pathExprNoRoot" type="pathExprNoRoot"/>
+        <xs:element name="unionExprNoRoot" type="unionExprNoRoot"/>
+        <xs:element name="unionExprNoRoot" type="unionExprNoRoot"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="pathExprNoRoot">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="locationPath" type="locationPath"/>
+        <xs:element name="filterExpr" type="filterExpr"/>
+        <xs:choice>
+          <xs:sequence/>
+          <xs:element name="relativeLocationPath" type="relativeLocationPath"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="filterExpr">
+    <xs:sequence>
+      <xs:element name="primaryExpr" type="primaryExpr"/>
+      <xs:element name="predicate" type="predicate"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="orExpr">
+    <xs:sequence>
+      <xs:element name="andExpr" type="andExpr"/>
+      <xs:element name="andExpr" type="andExpr"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="andExpr">
+    <xs:sequence>
+      <xs:element name="equalityExpr" type="equalityExpr"/>
+      <xs:element name="and" type="xs:string"/>
+      <xs:element name="equalityExpr" type="equalityExpr"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="equalityExpr">
+    <xs:sequence>
+      <xs:element name="relationalExpr" type="relationalExpr"/>
+      <xs:choice>
+        <xs:sequence/>
+        <xs:element name="relationalExpr" type="relationalExpr"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="relationalExpr">
+    <xs:sequence>
+      <xs:element name="additiveExpr" type="additiveExpr"/>
+      <xs:choice>
+        <xs:sequence/>
+        <xs:element name="additiveExpr" type="additiveExpr"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="additiveExpr">
+    <xs:sequence>
+      <xs:element name="multiplicativeExpr" type="multiplicativeExpr"/>
+      <xs:choice>
+        <xs:sequence/>
+        <xs:element name="multiplicativeExpr" type="multiplicativeExpr"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="multiplicativeExpr">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="unaryExprNoRoot" type="unaryExprNoRoot"/>
+        <xs:choice>
+          <xs:sequence>
+            <xs:element name="div" type="xs:string"/>
+            <xs:element name="mod" type="xs:string"/>
+          </xs:sequence>
+          <xs:element name="multiplicativeExpr" type="multiplicativeExpr"/>
+        </xs:choice>
+        <xs:choice>
+          <xs:sequence>
+            <xs:element name="div" type="xs:string"/>
+            <xs:element name="mod" type="xs:string"/>
+          </xs:sequence>
+          <xs:element name="multiplicativeExpr" type="multiplicativeExpr"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="unaryExprNoRoot">
+    <xs:sequence>
+      <xs:element name="unionExprNoRoot" type="unionExprNoRoot"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="qName">
+    <xs:sequence>
+      <xs:element name="nCName" type="nCName"/>
+      <xs:element name="nCName" type="nCName"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="functionName">
+    <xs:sequence>
+      <xs:element name="qName" type="qName"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="variableReference">
+    <xs:sequence>
+      <xs:element name="qName" type="qName"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="nameTest">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="nCName" type="nCName"/>
+        <xs:element name="qName" type="qName"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="nCName">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="NCName" type="xs:string"/>
+        <xs:element name="AxisName" type="xs:string"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+</xs:schema>
