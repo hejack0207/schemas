@@ -1,5 +1,5 @@
 {
-    "$schema": "../json/lnx-env.json",
+    "$schema": "../jsonschema/lnx-env.json",
     "repo-url": "https://github.com/hejack0207/lnx-env.data",
     "programs": [
         "zsh","vim","tmux","task","ansible","git"

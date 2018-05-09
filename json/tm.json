@@ -1,5 +1,5 @@
 {
-    "$schema": "../json/tmuxinator.json",
+    "$schema": "../jsonschema/tmuxinator.json",
     "name": "ff",
     "root": "fff",
     "windows": [

@@ -1,261 +1,41 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "job": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "reader": {
-                                "oneOf": [
-                                    {
-                                        "$ref": "#/definitions/streamreader"
-                                    },
-                                    {
-                                        "$ref": "#/definitions/oraclereader"
-                                    }
-                                ]
-                            },
-                            "writer": {
-                                "oneOf": [
-                                    {
-                                        "$ref": "#/definitions/streamwriter"
-                                    },
-                                    {
-                                        "$ref": "#/definitions/oraclewriter"
-                                    }                                 
-                                ]
-                            }
-                        }
-                    }
-                },
-                "setting": {
-                    "type": "object",
-                    "properties": {
-                            "speed": {
-                                "type": "object",
-                                "properties": {
-                                    "channel": {
-                                        "type": "integer"
-                                    },
-                                    "byte": {
-                                        "type": "integer"
-                                    }
-                                }
-                            },
-                            "errorLimit": {
-                                "type": "object",
-                                "properties": {
-                                    "record": {
-                                        "type": "integer"
-                                    },
-                                    "percentage":{
-                                        "type": "number"
-                                    }
-                                }
-                            }
-                    }
-                }    
-            }
-        }
-    },
-    "definitions": {
-        "streamreader":{
-            "title": "streamreader",
-            "type": "object",
-            "properties": {
-                "name": {
-                    "enum": [
-                        "streamreader"
-                    ]
-                },
-                "parameter": {
-                    "type": "object",
-                    "properties": {
-                        "sliceRecordCount": {
-                            "type": "integer"
-                        },
-                        "column": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "type": {
-                                        "type": "string"
-                                    },
-                                    "value": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "oraclereader":{
-            "title": "oraclereader",
-            "type":"object",
-            "properties": {
-                "name": {
-                    "enum": [
-                        "oraclereader"
-                    ]
-                },
-                "parameter":{
-                    "type": "object",
-                    "properties": {
-                        "username": {
-                            "type": "string"
-                        },
-                        "password": {
-                            "type": "string"
-                        },
-                        "column": {
-                            "type": "array",
-                            "items":{
-                                "type": "string"
-                            },
-                            "minItems":1
-                        },
-                        "splitPk":{
-                            "type": "string"
-                        },
-                        "where":{
-                            "type": "string"
-                        },
-                        "querySql":{
-                            "type": "string"
-                        },
-                        "fetchSize":{
-                            "type": "integer"
-                        },
-                        "session":{
-                            "type": "string",
-                            "pattern": "alter session set.*"
-                        },
+    "$schema": "../jsonschema/datax.json",
+    "job": {
+        "content": [
+            {
+                "reader": {
+                    "name": "oraclereader",
+                    "parameter": {
+                        "username": "gjzspt",
+                        "password": "12345678",
+                        "column": [
+                            "*"
+                        ],
                         "connection": {
-                            "type": "object",
-                            "properties": {
-                                "jdbcUrl": {
-                                    "type": "string",
-                                    "pattern": "jdbc:oracle:thin:@.*:\\d*:\\w*"
-                                },
-                                "table": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    },
-                                    "minItems":1
-                                }
-                            },
-                            "required": [
-                                "jdbcUrl","table"
+                            "jdbcUrl": "jdbc:oracle:thin:@192.168.21.249:1521:gjzs",
+                            "table": [
+                                "T_DGAP_RESOURCE"
                             ]
                         }
-                    },
-                    "required":[
-                        "username","password","column","connection"
-                    ],
-                    "default":{
-                        "fetchSize": 1024
                     }
-                }
-            }
-
-        },
-        "streamwriter":{
-            "title": "streamwriter",
-            "type":"object",
-            "properties": {
-                "name": {
-                    "enum": [
-                        "streamwriter"
-                    ]
                 },
-                "parameter":{
-                    "type": "object",
-                    "properties": {
-                        "encoding": {
-                            "enum": [
-                                "UTF-8"
-                            ]
-                        },
-                        "print": {
-                            "type": "boolean"
-                        }
-                    }
-                }
-            }
-
-        },
-        "oraclewriter":{
-            "title": "oraclewriter",
-            "type":"object",
-            "properties": {
-                "name": {
-                    "enum": [
-                        "oraclewriter"
-                    ]
-                },
-                "parameter":{
-                    "type": "object",
-                    "properties": {
-                        "username": {
-                            "type": "string"
-                        },
-                        "password": {
-                            "type": "string"
-                        },
-                        "column": {
-                            "type": "array",
-                            "items":{
-                                "type": "string"
-                            },
-                            "minItems":1
-                        },
-                        "preSql":{
-                            "type": "string"
-                        },
-                        "postSql":{
-                            "type": "string"
-                        },
-                        "batchSize":{
-                            "type": "integer"
-                        },
-                        "session":{
-                            "type": "string",
-                            "pattern": "alter session set.*"
-                        },
+                "writer": {
+                    "name": "oraclewriter",
+                    "parameter": {
+                        "username": "gjzspt_demo2",
+                        "password": "Oe123qwe###",
+                        "column": [
+                            "*"
+                        ],
                         "connection": {
-                            "type": "object",
-                            "properties": {
-                                "jdbcUrl": {
-                                    "type": "string",
-                                    "pattern": "jdbc:oracle:thin:@.*:\\d*:\\w*"
-                                },
-                                "table": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    },
-                                    "minItems":1
-                                }
-                            },
-                            "required": [
-                                "jdbcUrl","table"
+                            "jdbcUrl": "jdbc:oracle:thin:@10.0.52.1:1521:orcl",
+                            "table": [
+                                "T_DGAP_RESOURCE"
                             ]
                         }
-                     },
-                    "required":[
-                        "username","password","column","connection"
-                    ]
+                    }
                 }
             }
-        }
+        ]
     }
 }
