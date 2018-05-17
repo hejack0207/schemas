@@ -1,0 +1,9 @@
+{
+    "json.schemas": [
+    {
+        "fileMatch": [
+            "*/site.json"
+        ],
+        "url": "/jsonschema/ansible-playbook.json"
+    }]
+}

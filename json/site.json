@@ -4,7 +4,6 @@
         "order": "inventory",
         "tasks": [
         ]
-        
     },
     {
         "import": "aaa"
