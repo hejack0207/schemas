@@ -2,28 +2,82 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "array",
     "items": {
-        "properties": {
-            "name": {
-                "type": "string"
-            },
-            "import": {
-                "type": "string"
-            }
-        },
-        "dependencies": {
-            "name": {
-                "$ref": "#/definitions/play"
-            },
-            "import": {
-                "$ref": "#/definitions/play_import"
-            }
-        }
+        "oneOf":[
+            {"$ref": "#/definitions/play"},
+            {"$ref": "#/definitions/play_import"}
+        ]
     },
     "definitions": {
         "play": {
-            "allOf": [
+            "anyOf": [
                 {
-                    "$ref": "#/definitions/play_only"
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "hosts": {
+                            "type": "string",
+                            "description": "The hosts line is a list of one or more groups or host patterns, separated by colons"
+                        },
+                        "order": {
+                            "enum": [
+                                "inventory",
+                                "reverse_inventory",
+                                "sorted",
+                                "reverse_sorted",
+                                "shuffle"
+                            ]
+                        },
+                        "strategy": {
+                            "enum": [
+                                "linear",
+                                "serial",
+                                "free"
+                            ],
+                            "default": "linear"
+                        },
+                        "pre_tasks": {},
+                        "handlers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handler"
+                            }
+                        },
+                        "roles": {
+                            "type": "array",
+                            "items": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "role": {
+                                                "type": "string",
+                                                "description": "role file full qualified path"
+                                            }
+                                        },
+                                        "additionalProperties": true
+                                    },
+                                    {
+                                        "$ref": "#/definitions/taggable"
+                                    }
+                                ]
+                            }
+                        },
+                        "tasks": {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/definitions/task"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/conditional"
+                                    }
+                                ]
+                            }
+                        },
+                        "post_tasks": {},
+                        "remote_user": {}
+                    }        
                 },
                 {
                     "$ref": "#/definitions/play_and_task"
@@ -31,28 +85,39 @@
             ]
         },
         "task": {
-            "properties": {
-                "name": {
-                    "type": "string"
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/import_or_include_tasks"
                 },
-                "import_tasks": {
-                    "type": "string"
-                },
-                "include_tasks": {
-                    "type": "string"
-                },
-                "import_role": {
-                    "type": "string"
-                },
-                "include_role": {
-                    "type": "string"
-                }
-            },
-            "dependencies": {
-                "name": {
-                    "allOf": [
+                {
+                    "anyOf": [
                         {
-                            "$ref": "#/definitions/task_only"
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "import_tasks": {
+                                    "type": "string"
+                                },
+                                "include_tasks": {
+                                    "type": "string"
+                                },
+                                "import_role": {
+                                    "type": "string"
+                                },
+                                "include_role": {
+                                    "type": "string"
+                                },
+                                "notify": {
+                                    "type": "array"
+                                },
+                                "register": {
+                                    "type": "string"
+                                },
+                                "ignore_errors": {
+                                    "type": "boolean"
+                                }                
+                            }
                         },
                         {
                             "$ref": "#/definitions/play_and_task"
@@ -61,21 +126,9 @@
                             "$ref": "./ansible-modules.json"
                         }
                     ]
-                },
-                "import_tasks": {
-                    "$ref": "#/definitions/import_or_include_tasks"
-                },
-                "include_tasks": {
-                    "$ref": "#/definitions/import_or_include_tasks"
-                },
-                "include_role": {
-                    "properties": {
-                        "vars": {
-                            "type": "object"
-                        }
-                    }
+
                 }
-            }
+            ]
         },
         "handler": {
             "properties": {
@@ -114,92 +167,16 @@
         },
         "play_import": {
             "properties": {
+                "import": {
+                    "type": "string"
+                },                
                 "import_playbook": {
                     "type": "string"
                 }
             }
         },
-        "play_only": {
-            "properties": {
-                "hosts": {
-                    "type": "string",
-                    "description": "The hosts line is a list of one or more groups or host patterns, separated by colons"
-                },
-                "order": {
-                    "enum": [
-                        "inventory",
-                        "reverse_inventory",
-                        "sorted",
-                        "reverse_sorted",
-                        "shuffle"
-                    ]
-                },
-                "strategy": {
-                    "enum": [
-                        "linear",
-                        "serial",
-                        "free"
-                    ],
-                    "default": "linear"
-                },
-                "pre_tasks": {},
-                "handlers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/handler"
-                    }
-                },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "allOf": [
-                            {
-                                "properties": {
-                                    "role": {
-                                        "type": "string",
-                                        "description": "role file full qualified path"
-                                    }
-                                },
-                                "additionalProperties": true
-                            },
-                            {
-                                "$ref": "#/definitions/taggable"
-                            }
-                        ]
-                    }
-                },
-                "tasks": {
-                    "type": "array",
-                    "items": {
-                        "allOf": [
-                            {
-                                "$ref": "#/definitions/task"
-                            },
-                            {
-                                "$ref": "#/definitions/conditional"
-                            }
-                        ]
-                    }
-                },
-                "post_tasks": {}
-            }
-        },
         "task_only": {
             "allOf": [
-                {
-                    "properties": {
-                        "name": {},
-                        "notify": {
-                            "type": "array"
-                        },
-                        "register": {
-                            "type": "string"
-                        },
-                        "ignore_errors": {
-                            "type": "boolean"
-                        }
-                    }
-                },
                 {
                     "$ref": "#/definitions/block"
                 }

@@ -5,5 +5,11 @@
             "*/site.json"
         ],
         "url": "/jsonschema/ansible-playbook.json"
+    },
+    {
+        "fileMatch": [
+            "*/site2.json"
+        ],
+        "url": "/jsonschema/ansible-playbook2.json"
     }]
 }

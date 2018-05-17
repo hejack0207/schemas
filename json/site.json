@@ -2,7 +2,11 @@
     {
         "name": "ddd",
         "order": "inventory",
+        "hosts": "www",
         "tasks": [
+            {
+                "name": ""
+            }
         ]
     },
     {

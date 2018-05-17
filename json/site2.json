@@ -1,0 +1,17 @@
+[
+    {
+        "name": "ddd",
+        "order": "inventory",
+        "tasks": [
+            {
+                "name":"aaa"
+            },
+            {
+                "when": "",
+                "with_dict": "",
+                "with_items": "",
+                "a10":""
+            }
+        ]
+    }
+]
